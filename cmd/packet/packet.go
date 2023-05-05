@@ -10,6 +10,7 @@ import (
 	"geacon/cmd/crypt"
 	"geacon/cmd/sysinfo"
 	"geacon/cmd/util"
+	"github.com/imroc/req"
 	"strconv"
 	"strings"
 	"time"
